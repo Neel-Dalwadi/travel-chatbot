@@ -1,0 +1,29 @@
+[project]
+name = "backend"
+version = "1.8.2"
+description = "travel_chatbot"
+authors = [
+    {name = "Neel-Dalwadi",email = "dalwadineel2511@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13 < 4.0"
+dependencies = [
+    "agno (>=1.7.7,<2.0.0)",
+    "openai (>=1.98.0,<2.0.0)",
+    "pymongo (>=4.13.2,<5.0.0)",
+    "flask (>=3.1.1,<4.0.0)",
+    "flask-cors (>=6.0.1,<7.0.0)",
+    "python-dotenv (>=1.1.1,<2.0.0)",
+    "requests (>=2.32.4,<3.0.0)",
+    "waitress (>=3.0.2,<4.0.0)",
+    "dnspython (>=2.7.0,<3.0.0)",
+    "rich (<14.0.0)",
+    "lance (>=1.2.1,<2.0.0)",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+    

@@ -1,0 +1,29 @@
+# Environment variables
+*.env
+
+# Node.js
+node_modules/
+
+# Build / output folders
+dist/
+build/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE / editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
