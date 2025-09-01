@@ -75,10 +75,10 @@ const authSlice = createSlice({
         });
         builder.addCase(logout.rejected, (state, action) => {
             state.loading = false;
+            state.error = action.payload || "Logout failed";
             state.user = null;
             state.token = null;
             state.isAuthenticated = false;
-            state.error = action.payload || "Logout failed";
             localStorage.removeItem("user");
             localStorage.removeItem("token");
         });

@@ -1,24 +1,46 @@
-from agno.tools import tool
+from agno.agent import Agent
+from agno.tools.tavily import TavilyTools
+import os
+import re
+from dotenv import load_dotenv
+load_dotenv()
 
-@tool(name="suggest_destination", description="Suggest a travel destination based on user preferences.")
-def destination_tool(text:str)->str:
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+
+agent = Agent(
+    tools=[TavilyTools(search=True)],
+    show_tool_calls=True
+)
+
+def extract_location(user_message: str) -> str:
     """
-    Suggest a travel destination based on user ask for where to go on for vacation.
-    Args:
-        text (str): User's request for travel destination.
-    Returns:
-        str: Suggested travel destination.
-        
+    Try to extract a location from the user message.
+    Examples:
+        "I want to go in Paris" -> "Paris"
+        "Tell me about Switzerland" -> "Switzerland"
     """
-    text = text.lower()
-    if "vacation" in text or "holiday" in text:
-        if "beach" in text:
-            return "How about visiting the Maldives? It's known for its stunning beaches and crystal-clear waters."
-        elif "mountain" in text:
-            return "You might enjoy a trip to the Swiss Alps for breathtaking mountain views and skiing."
-        elif "city" in text:
-            return "Consider exploring Paris, France, with its rich history, art, and culture."
-        else:
-            return "Could you please specify your interests or preferences for the vacation?"
-    else:
-        return "Based on your preferences, I suggest visiting Bali, Indonesia. It's a beautiful destination with stunning beaches, rich culture, and plenty of activities to enjoy."
+    match = re.search(r"(?:in|at|to)\s+([a-zA-Z\s]+)", user_message, re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+    return user_message.strip()  
+
+def handle_user_message(user_message: str) -> str:
+    """
+    Main chatbot logic for your Travel Chatbot project.
+    Returns top destinations + hotels for a given location.
+    """
+    location = extract_location(user_message)
+    prompt = f"""
+    You are a helpful travel assistant.
+    The user wants to travel to: {location}.
+    
+    Provide:
+    1. Top 3 destinations or attractions in {location}.
+    2. Top 3 hotels for accommodation (with a short description).
+    
+    Format clearly in a numbered list.
+    """
+
+    return agent.run(prompt)
+
+

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import ChatWindow from "../components/ChatWindow";
+import { resetChat } from "../features/chat/chatSlice";
 
 const ChatbotPage = () => {
     const dispatch = useDispatch();
@@ -14,9 +15,11 @@ const ChatbotPage = () => {
     const handleLogout = async () => {
         try {
             const result = await dispatch(logout()).unwrap();
-            navigate("/login", { state: { message: result.message } });
+            dispatch(resetChat());
+            navigate("/login", { state: { message: result?.message || "Logout successful" } });
         } catch (err) {
-            navigate("/login", { state: { message: "Logout failed" } });
+            dispatch(resetChat());
+            navigate("/login", { state: { message: err || "Logout failed" } });
         }
     };
 

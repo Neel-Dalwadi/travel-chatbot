@@ -5,7 +5,7 @@ export const sendChatMessage = createAsyncThunk(
     "chat/sendChatMessage",
     async (message) => {
         const reply = await sendMessage(message);
-        return { role : "bot", text: reply };
+        return { role: "bot", text: reply };
     }
 );
 
@@ -23,6 +23,11 @@ const chatSlice = createSlice({
                 timestamp: new Date().toISOString(),
             });
         },
+        resetChat: (state) => {
+            state.messages = [];
+            state.error = null;
+            state.loading = false;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(sendChatMessage.fulfilled, (state, action) => {
@@ -31,5 +36,5 @@ const chatSlice = createSlice({
     },
 });
 
-export const { addUserMessage } = chatSlice.actions;
+export const { addUserMessage,resetChat } = chatSlice.actions;
 export default chatSlice.reducer;

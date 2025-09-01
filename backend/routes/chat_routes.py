@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 from services.chat_service import process_user_message
 from flask_cors import CORS, cross_origin
+from agno_agent.tools.destination_tool import handle_user_message
 
 chat_blueprint = Blueprint('chat', __name__)
 CORS(chat_blueprint, origins=["http://localhost:5173"], supports_credentials=True)
@@ -15,6 +16,13 @@ def login():
 def logout():
     return jsonify({"message": "Logout successful"}), 200
 
+@chat_blueprint.route("/api/travel-info", methods=["GET"])
+def get_travel_info():
+    location = request.args.get("location")
+    if not location:
+        return jsonify({"error": "Location is required"}), 400
+    data = handle_user_message(location)
+    return jsonify(data)
 
 
 @chat_blueprint.route('/api/chat', methods=['POST'])
