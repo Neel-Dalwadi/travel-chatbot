@@ -13,8 +13,8 @@ def login():
 
 @chat_blueprint.route("/api/auth/logout", methods=["POST"])
 def logout():
-    session.clear()
-    return jsonify({"message": "logged out"}), 200
+    return jsonify({"message": "Logout successful"}), 200
+
 
 
 @chat_blueprint.route('/api/chat', methods=['POST'])

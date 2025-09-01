@@ -12,9 +12,15 @@ const ChatbotPage = () => {
     const [loading, setLoading] = useState(true);
 
     const handleLogout = async () => {
-        await dispatch(logout());
-        navigate("/login", { replace: true });
+        try {
+            const result = await dispatch(logout()).unwrap();
+            navigate("/login", { state: { message: result.message } });
+        } catch (err) {
+            navigate("/login", { state: { message: "Logout failed" } });
+        }
     };
+
+
 
     useEffect(() => {
         const timer = setTimeout(() => setLoading(false), 1200);
@@ -23,7 +29,7 @@ const ChatbotPage = () => {
 
     return (
         <div className="flex flex-col h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 relative">
-            <header className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 shadow-lg">
+            <nav className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 shadow-lg">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 flex items-center justify-center bg-white text-blue-600 font-bold rounded-full shadow-md">
                         {user?.name?.[0]?.toUpperCase() || "U"}
@@ -38,7 +44,7 @@ const ChatbotPage = () => {
                 >
                     Logout
                 </button>
-            </header>
+            </nav>
 
             <main className="flex-grow flex justify-center items-center p-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-5 pointer-events-none"></div>

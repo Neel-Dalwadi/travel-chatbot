@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../features/auth/authSlice";
 import { FiMail, FiLock } from "react-icons/fi";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
+    const location = useLocation();
+    const [message, setMessage] = useState(location.state?.message || "");
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("");
@@ -17,6 +20,17 @@ const Login = () => {
             navigate("/chatbot");
         }
     }, [isAuthenticated, navigate]);
+
+    
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => {
+                setMessage("");
+                navigate(location.pathname, { replace: true }); // remove state
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [message, navigate, location.pathname]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,7 +57,7 @@ const Login = () => {
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    
+
                     <div className="relative">
                         <FiMail className="absolute top-3 left-3 text-gray-400" />
                         <input
@@ -56,7 +70,7 @@ const Login = () => {
                         />
                     </div>
 
-                    
+
                     <div className="relative">
                         <FiLock className="absolute top-3 left-3 text-gray-400" />
                         <input
@@ -70,15 +84,14 @@ const Login = () => {
                     </div>
 
                     {error && <p className="text-red-500 text-sm">{error}</p>}
-
+                    {message && <p className="text-green-600 text-sm">{message}</p>}
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`w-full py-3 font-semibold text-white rounded-lg transition-all duration-300 transform ${
-                            loading
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-blue-600 hover:bg-blue-700 hover:scale-105 shadow-lg"
-                        }`}
+                        className={`w-full py-3 font-semibold text-white rounded-lg transition-all duration-300 transform ${loading
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-blue-600 hover:bg-blue-700 hover:scale-105 shadow-lg"
+                            }`}
                     >
                         {loading ? "Logging in..." : "Login"}
                     </button>
