@@ -88,7 +88,7 @@ const Login = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`w-full py-3 font-semibold text-white rounded-lg transition-all duration-300 transform ${loading
+                        className={`w-full py-3 font-semibold text-white rounded-lg hover:cursor-pointer transition-all duration-300 transform ${loading
                             ? "bg-gray-400 cursor-not-allowed"
                             : "bg-blue-600 hover:bg-blue-700 hover:scale-105 shadow-lg"
                             }`}
