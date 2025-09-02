@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import ChatbotPage from "./pages/ChatbotPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import SignUp from "./pages/SignUp";
+// import SignUp from "./pages/SignUp";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
             
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            {/* <Route path="/signup" element={<SignUp />} /> */}
             
             <Route
               path="/chatbot"

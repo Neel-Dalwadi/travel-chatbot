@@ -20,9 +20,9 @@ export const logoutUser = async () => {
         throw new Error(error.response?.data?.message || "Logout failed");
     }
 };
-export const registerUser = async (userData) => {
-    const response = await axios.post("http://localhost:5000/api/auth/signup", userData, {
-        withCredentials: true,
-    });
-    return response.data;
-};
+// export const registerUser = async (userData) => {
+//     const response = await axios.post("http://localhost:5000/api/auth/signup", userData, {
+//         withCredentials: true,
+//     });
+//     return response.data;
+// };
