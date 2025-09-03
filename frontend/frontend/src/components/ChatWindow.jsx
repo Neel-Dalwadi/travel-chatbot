@@ -59,10 +59,10 @@ const ChatWindow = () => {
     };
 
     return (
-        <div className="flex flex-col h-[80vh] p-4 ">
+        <div className="flex flex-col h-[90vh] p-4 ">
             <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">Travel Chatbot</h2>
             <hr className='text-blue-700'/>
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-white rounded-xl ">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-white/100 shadow-xs rounded-xl ">
                 {messages.map((msg, idx) => (
                     <div
                         key={idx}

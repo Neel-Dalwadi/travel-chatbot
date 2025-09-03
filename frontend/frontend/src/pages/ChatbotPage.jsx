@@ -86,12 +86,12 @@ const ChatbotPage = () => {
                 ☰
             </button>
 
-            <div className="flex items-center justify-between text-black px-6 py-4">
+            <div className="flex items-center justify-between bg-white text-gray-700  px-6 py-4">
                 <div className="flex items-center justify-end gap-5 ml-auto">
-                    <div className="w-10 h-10 flex items-center justify-center bg-white text-black font-bold rounded-full shadow-md">
+                    <div className="w-10 h-10 flex items-center justify-center bg-white text-gray-700 font-bold rounded-full shadow-md">
                         {user?.name ? user.name.split("@")[0][0].toUpperCase() : "U"}
                     </div>
-                    <h2 className="text-lg font-medium">
+                    <h2 className="text-lg font-semibold ml-2">
                         Welcome, <span className="font-semibold">{username}</span>
                     </h2>
                     <button
@@ -103,7 +103,7 @@ const ChatbotPage = () => {
                 </div>
             </div>
 
-            <main className="flex-grow flex justify-center items-center p-6 relative overflow-hidden">
+            <main className="flex-grow flex justify-center items-center bg-white p-6 relative overflow-hidden">
                 {loading ? (
                     <div className="flex flex-col items-center justify-center text-center bg-white backdrop-blur-lg shadow-2xl rounded-2xl p-10 max-w-md animate-fadeIn">
                         <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-6"></div>
@@ -113,7 +113,7 @@ const ChatbotPage = () => {
                         <p className="text-sm text-gray-500 mt-2">Please wait a moment</p>
                     </div>
                 ) : (
-                    <div className="w-full max-w-4xl h-full bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl overflow-hidden flex flex-col border border-gray-200 animate-fadeIn">
+                    <div className="w-full max-w-4xl bg-whites  backdrop-blur-lg shadow-2xs rounded-2xl overflow-hidden flex flex-col border border-gray-100">
                         <ChatWindow chat={activeChat} />
                     </div>
                 )}

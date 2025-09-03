@@ -1,0 +1,22 @@
+[
+    {
+        "email": "neel@example.com",
+        "password": "Neel"
+    },
+    {
+        "email": "parth@example.com",
+        "password": "Secure#5678"
+    },
+    {
+        "email": "kalpesh@example.com",
+        "password": "MyPass!9012"
+    },
+    {
+        "email": "devansh@example.com",
+        "password": "Login@3456"
+    },
+    {
+        "email": "manmay@example.com",
+        "password": "Key#7890"
+    }
+]
