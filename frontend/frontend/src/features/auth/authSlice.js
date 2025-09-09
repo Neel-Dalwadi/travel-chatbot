@@ -30,7 +30,7 @@ const authSlice = createSlice({
     initialState: {
         user: null,
         token: null,
-        email: null, // Restored this field as per your original file
+        email: null,
         loading: false,
         error: null,
         isAuthenticated: false,
@@ -46,7 +46,7 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.user = action.payload.user || null;
                 state.token = action.payload.token || null;
-                // The backend user object contains the email, so we access it here
+                
                 state.email = action.payload.user?.email || null; 
                 state.isAuthenticated = true;
                 // Restored your original logic for saving to localStorage
@@ -71,7 +71,7 @@ const authSlice = createSlice({
                 state.token = null;
                 state.isAuthenticated = false;
                 state.error = null;
-                // I noticed you were missing removal of the 'email' item here
+                
                 localStorage.removeItem("user");
                 localStorage.removeItem("token");
                 localStorage.removeItem("email");
@@ -82,7 +82,7 @@ const authSlice = createSlice({
                 state.user = null;
                 state.token = null;
                 state.isAuthenticated = false;
-                // I also added the 'email' removal here for consistency
+                
                 localStorage.removeItem("user");
                 localStorage.removeItem("token");
                 localStorage.removeItem("email");

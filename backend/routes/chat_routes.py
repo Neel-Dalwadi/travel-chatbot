@@ -6,11 +6,10 @@ import json
 
 chat_blueprint = Blueprint('chat', __name__)
 
-# FIX: Added 'supports_credentials=True' to allow requests with tokens.
+
 CORS(chat_blueprint, origins=["http://localhost:5173"], supports_credentials=True)
 
-# The login/logout routes were removed from here because they conflicted
-# with the main JWT authentication in app.py, which the frontend uses.
+
 
 @chat_blueprint.route("/api/travel-info", methods=["GET"])
 def get_travel_info():

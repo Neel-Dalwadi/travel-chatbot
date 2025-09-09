@@ -3,11 +3,10 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
 from datetime import timedelta
 import json
-# I have imported the blueprint from your other file to make its routes work
+
 from routes.chat_routes import chat_blueprint
 
-# This function's code was not provided, so it must be implemented.
-# The logic is based on what you had in chat_routes.py (checking a JSON file).
+
 def check_user(email, password):
     try:
         with open('users.json', 'r') as f:
