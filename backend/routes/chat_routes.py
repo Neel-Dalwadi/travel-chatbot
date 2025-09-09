@@ -2,19 +2,15 @@ from flask import Blueprint, request, jsonify, session
 from services.chat_service import process_user_message
 from flask_cors import CORS, cross_origin
 from agno_agent.tools.destination_tool import handle_user_message
+import json
 
 chat_blueprint = Blueprint('chat', __name__)
+
+# FIX: Added 'supports_credentials=True' to allow requests with tokens.
 CORS(chat_blueprint, origins=["http://localhost:5173"], supports_credentials=True)
 
-
-@chat_blueprint.route('/api/auth/login', methods=['POST', 'OPTIONS'])
-def login():
-    return {"message": "Login working!"}
-
-
-@chat_blueprint.route("/api/auth/logout", methods=["POST"])
-def logout():
-    return jsonify({"message": "Logout successful"}), 200
+# The login/logout routes were removed from here because they conflicted
+# with the main JWT authentication in app.py, which the frontend uses.
 
 @chat_blueprint.route("/api/travel-info", methods=["GET"])
 def get_travel_info():
@@ -24,10 +20,12 @@ def get_travel_info():
     data = handle_user_message(location)
     return jsonify(data)
 
-
-@chat_blueprint.route('/api/chat', methods=['POST'])
+@chat_blueprint.route('/api/chat', methods=['POST','OPTIONS'])
 def chat():
     try:
+        if request.method == "OPTIONS":
+            return jsonify({"status": "ok"}), 200
+        
         if not request.is_json:
             return jsonify({"error": "Request must be JSON"}), 400
 

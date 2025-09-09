@@ -1,22 +1,27 @@
 [
     {
         "email": "neel@example.com",
-        "password": "Neel"
+        "password": "1234",
+        "role": "user"
     },
     {
         "email": "parth@example.com",
-        "password": "Secure#5678"
+        "password": "123",
+        "role": "user"
     },
     {
         "email": "kalpesh@example.com",
-        "password": "MyPass!9012"
+        "password": "12345",
+        "role": "user"
     },
     {
         "email": "devansh@example.com",
-        "password": "Login@3456"
+        "password": "3456",
+        "role": "user"
     },
     {
         "email": "manmay@example.com",
-        "password": "Key#7890"
+        "password": "12345",
+        "role": "user"
     }
 ]

@@ -4,6 +4,7 @@ import { logout } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { resetChat } from "../features/chat/chatSlice";
 import ChatWindow from "../components/ChatWindow";
+import { FiMenu, FiX } from "react-icons/fi";
 
 const ChatbotPage = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const ChatbotPage = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [chats, setChats] = useState([]);
     const [activeChat, setActiveChat] = useState(null);
+    
 
     const handleLogout = async () => {
         try {
@@ -26,48 +28,56 @@ const ChatbotPage = () => {
         }
     };
 
-    const username = user?.name
-        ? user.name.split("@")[0].charAt(0).toUpperCase() + user.name.split("@")[0].slice(1)
-        : "User";
+    const username = localStorage.getItem("chatbot_username");
 
     const startNewChat = () => {
         const newChat = { id: Date.now(), title: `Chat ${chats.length + 1}`, messages: [] };
         setChats([newChat, ...chats]);
         setActiveChat(newChat);
-        setSidebarOpen(false);
+        setSidebarOpen(true);
     };
 
-
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 1200);
+        const timer = setTimeout(() => setLoading(false), 1000);
         return () => clearTimeout(timer);
     }, []);
 
     return (
-        <div className="flex flex-col h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 relative">
+        <div className="flex h-screen w-full bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50">
             <aside
-                className={`fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-20 transform transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-                    }`}
+                className={`fixed top-0 left-0 h-full w-64 bg-white/90 backdrop-blur-lg border-r border-gray-200 shadow-lg flex flex-col transition-transform duration-300 
+                            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
+                <div className="flex justify-between items-center p-4 border-b">
+                    <h2 className="text-lg font-bold text-blue-700">Chats</h2>
+                    <button
+                        onClick={() => setSidebarOpen(false)}
+                        className="p-2 rounded-lg hover:bg-gray-200"
+                    >
+                        <FiX size={20} />
+                    </button>
+                </div>
+
                 <div className="flex flex-col h-full p-4">
-                    <h2 className="text-2xl mb-4 text-blue-600">Chats</h2>
                     <button
                         onClick={startNewChat}
-                        className="w-full mb-4 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-medium"
+                        className="w-full mb-4 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 rounded-lg font-medium shadow-md transition"
                     >
                         + New Chat
                     </button>
-                    <div className="flex-grow overflow-y-auto">
+
+                    <div className="flex-grow overflow-y-auto custom-scrollbar">
                         {chats.length === 0 && (
-                            <p className="text-gray-400 text-sm">No chats yet</p>
+                            <p className="text-gray-400 text-sm italic">No chats yet</p>
                         )}
                         {chats.map((chat) => (
                             <div
                                 key={chat.id}
                                 onClick={() => setActiveChat(chat)}
-                                className={`p-2 mb-2 rounded cursor-pointer ${activeChat?.id === chat.id
-                                        ? "bg-blue-100 font-semibold"
-                                        : "hover:bg-gray-100"
+                                className={`p-2 mb-2 rounded-lg cursor-pointer text-sm transition 
+                                                ${activeChat?.id === chat.id
+                                        ? "bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 font-semibold"
+                                        : "hover:bg-gray-100 text-gray-700"
                                     }`}
                             >
                                 {chat.title}
@@ -77,47 +87,49 @@ const ChatbotPage = () => {
                 </div>
             </aside>
 
-            <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className={`fixed top-4 z-30 w-10 h-10 flex items-center justify-center hover:cursor-pointer  bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg transition-all duration-300
-                            ${sidebarOpen ? "left-[260px]" : "left-4"
+            <div
+                className={`flex flex-col transition-all duration-300 ${sidebarOpen ? "ml-64 w-[calc(100%-16rem)]" : "ml-0 w-full"
                     }`}
             >
-                ☰
-            </button>
-
-            <div className="flex items-center justify-between bg-white text-gray-700  px-6 py-4">
-                <div className="flex items-center justify-end gap-5 ml-auto">
-                    <div className="w-10 h-10 flex items-center justify-center bg-white text-gray-700 font-bold rounded-full shadow-md">
-                        {user?.name ? user.name.split("@")[0][0].toUpperCase() : "U"}
-                    </div>
-                    <h2 className="text-lg font-semibold ml-2">
-                        Welcome, <span className="font-semibold">{username}</span>
+                <header className="flex items-center justify-between px-6 py-3 border-b border-gray-300 bg-white/80 backdrop-blur-lg shadow-sm relative">
+                    {!sidebarOpen && (
+                        <button
+                            onClick={() => setSidebarOpen(true)}
+                            className="absolute left-4 p-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition"
+                        >
+                            <FiMenu size={20} />
+                        </button>
+                    )}
+                    <h2 className={`text-lg font-bold text-indigo-600 tracking-wide ${!sidebarOpen ? "ml-12" : ""}`}>
+                        {activeChat ? activeChat.title : "Travel Chatbot"}
                     </h2>
-                    <button
-                        onClick={handleLogout}
-                        className="bg-red-500 hover:bg-red-600 hover:cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-md"
-                    >
-                        Logout
-                    </button>
-                </div>
-            </div>
+                    <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-r from-indigo-200 to-pink-200 text-gray-800 font-bold rounded-full shadow-md">
+                            {username.charAt(0).toUpperCase()}
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-3 py-1.5 rounded-md text-sm shadow-md transition"
+                        >
+                            Logout
+                        </button>
+                    </div>
+                </header>
 
-            <main className="flex-grow flex justify-center items-center bg-white p-6 relative overflow-hidden">
-                {loading ? (
-                    <div className="flex flex-col items-center justify-center text-center bg-white backdrop-blur-lg shadow-2xl rounded-2xl p-10 max-w-md animate-fadeIn">
-                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-6"></div>
-                        <h3 className="text-lg font-semibold text-gray-700 animate-pulse">
-                            Connecting to your Travel Chatbot…
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-2">Please wait a moment</p>
-                    </div>
-                ) : (
-                    <div className="w-full max-w-4xl bg-whites  backdrop-blur-lg shadow-2xs rounded-2xl overflow-hidden flex flex-col border border-gray-100">
+                <main className="flex-1 flex flex-col bg-gradient-to-br from-gray-50 to-gray-100">
+                    {loading ? (
+                        <div className="flex flex-col items-center justify-center flex-1 text-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent mb-4"></div>
+                            <h3 className="text-gray-600 text-sm">
+                                Connecting to your{" "}
+                                <span className="text-indigo-600 font-medium">Travel Chatbot…</span>
+                            </h3>
+                        </div>
+                    ) : (
                         <ChatWindow chat={activeChat} />
-                    </div>
-                )}
-            </main>
+                    )}
+                </main>
+            </div>
         </div>
     );
 };

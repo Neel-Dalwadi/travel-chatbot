@@ -25,63 +25,68 @@ export const logout = createAsyncThunk(
     }
 );
 
-const storedUser = localStorage.getItem("user");
-const parsedUser =
-    storedUser && storedUser !== "undefined" ? JSON.parse(storedUser) : null;
-
-const storedToken = localStorage.getItem("token");
-const parsedToken =
-    storedToken && storedToken !== "undefined" ? storedToken : null;
-
 const authSlice = createSlice({
     name: "auth",
     initialState: {
-        user: parsedUser,
-        token: parsedToken,
+        user: null,
+        token: null,
+        email: null, // Restored this field as per your original file
         loading: false,
         error: null,
-        isAuthenticated: !!parsedToken,
+        isAuthenticated: false,
     },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(login.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        });
-        builder.addCase(login.fulfilled, (state, action) => {
-            state.loading = false;
-            state.user = action.payload.user;
-            state.token = action.payload.token;
-            state.isAuthenticated = true;
-            localStorage.setItem("user", JSON.stringify(action.payload.user));
-            localStorage.setItem("token", action.payload.token);
-        });
-        builder.addCase(login.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        });
-
-        builder.addCase(logout.pending, (state) => {
-            state.loading = true;
-        });
-        builder.addCase(logout.fulfilled, (state) => {
-            state.loading = false;
-            state.user = null;
-            state.token = null;
-            state.isAuthenticated = false;
-            state.error = null;
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-        });
-        builder.addCase(logout.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload || "Logout failed";
-            state.user = null;
-            state.token = null;
-            state.isAuthenticated = false;
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-        });
+        builder
+            .addCase(login.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(login.fulfilled, (state, action) => {
+                state.loading = false;
+                state.user = action.payload.user || null;
+                state.token = action.payload.token || null;
+                // The backend user object contains the email, so we access it here
+                state.email = action.payload.user?.email || null; 
+                state.isAuthenticated = true;
+                // Restored your original logic for saving to localStorage
+                if (state.user) {
+                    localStorage.setItem("user", JSON.stringify(state));
+                    localStorage.setItem("email", state.email);
+                }
+                if (state.token) {
+                    localStorage.setItem("token", state.token);
+                }
+            })
+            .addCase(login.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Login failed";
+            })
+            .addCase(logout.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.loading = false;
+                state.user = null;
+                state.token = null;
+                state.isAuthenticated = false;
+                state.error = null;
+                // I noticed you were missing removal of the 'email' item here
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+                localStorage.removeItem("email");
+            })
+            .addCase(logout.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Logout failed";
+                state.user = null;
+                state.token = null;
+                state.isAuthenticated = false;
+                // I also added the 'email' removal here for consistency
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+                localStorage.removeItem("email");
+            });
     },
 });
 
