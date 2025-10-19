@@ -6,36 +6,43 @@ import json
 
 from routes.chat_routes import chat_blueprint
 
+def load_users():
+    """Load users from the JSON file."""
+    try:
+        with open("users.json", "r") as f:
+            users = json.load(f)
+        return users
+    except FileNotFoundError:
+        return []
 
 def check_user(email, password):
-    try:
-        with open('users.json', 'r') as f:
-            users = json.load(f)
-        for user in users:
-            if user.get('email') == email and user.get('password') == password:
-                return user
-    except IOError:
-        return None
+    """Check if the email and password match any user."""
+    users = load_users()
+    for user in users:
+        if user.get("email") == email and user.get("password") == password:
+            return user
     return None
 
 def create_app():
     app = Flask(__name__)
 
+
     app.config["JWT_SECRET_KEY"] = "super-secret-key"
-    app.config["JWT_ACCESS_TOKEN_EXPRES"] = timedelta(hours=1)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
     jwt = JWTManager(app)
 
+    
     CORS(
         app,
         resources={r"/*": {"origins": "http://localhost:5173"}},
-        supports_credentials=True,
-        methods=["POST", "OPTIONS", "GET"],
-        allow_headers=["Content-Type", "Authorization"]
+        supports_credentials=True
     )
 
-    # This line makes the routes in chat_routes.py active.
+    
     app.register_blueprint(chat_blueprint)
 
+    
     @app.route("/api/login", methods=["POST"])
     def login():
         data = request.get_json()
@@ -52,8 +59,8 @@ def create_app():
             })
         else:
             return jsonify({"message": "Invalid credentials"}), 401
+
     
-    # This route was added because your frontend code calls it
     @app.route("/api/logout", methods=["POST"])
     def logout():
         return jsonify({"message": "Logout successful"}), 200

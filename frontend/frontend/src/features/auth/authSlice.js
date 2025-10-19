@@ -33,7 +33,7 @@ const authSlice = createSlice({
         email: null,
         loading: false,
         error: null,
-        isAuthenticated: false,
+        isAuthenticated: !!localStorage.getItem("email") || false,
     },
     reducers: {},
     extraReducers: (builder) => {

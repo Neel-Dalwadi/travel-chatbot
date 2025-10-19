@@ -48,11 +48,11 @@ const ChatbotPage = () => {
                 className={`fixed top-0 left-0 h-full w-64 bg-white/90 backdrop-blur-lg border-r border-gray-200 shadow-lg flex flex-col transition-transform duration-300 
                             ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
-                <div className="flex justify-between items-center p-4 border-b">
+                <div className="flex justify-between items-center p-4 ">
                     <h2 className="text-lg font-bold text-blue-700">Chats</h2>
                     <button
                         onClick={() => setSidebarOpen(false)}
-                        className="p-2 rounded-lg hover:bg-gray-200"
+                        className="p-2 rounded-lg hover:bg-gray-200 hover:cursor-pointer"
                     >
                         <FiX size={20} />
                     </button>
@@ -61,7 +61,7 @@ const ChatbotPage = () => {
                 <div className="flex flex-col h-full p-4">
                     <button
                         onClick={startNewChat}
-                        className="w-full mb-4 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 rounded-lg font-medium shadow-md transition"
+                        className="w-full mb-4 bg-gradient-to-r hover:cursor-pointer from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white py-2 rounded-lg font-medium shadow-md transition"
                     >
                         + New Chat
                     </button>
@@ -95,7 +95,7 @@ const ChatbotPage = () => {
                     {!sidebarOpen && (
                         <button
                             onClick={() => setSidebarOpen(true)}
-                            className="absolute left-4 p-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition"
+                            className="absolute left-4 p-2 hover:cursor-pointer bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition"
                         >
                             <FiMenu size={20} />
                         </button>
